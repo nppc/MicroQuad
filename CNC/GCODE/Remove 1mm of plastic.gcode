@@ -4,7 +4,7 @@
 
 G90
 M03 S24000
-G1 X52 Y12 F4000
+G1 X55 Y25 F4000
 G1 Z0 ; premove
 M84 Z
 M00; wait to confirm everything is aligned
