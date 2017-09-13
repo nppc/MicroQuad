@@ -327,7 +327,7 @@ M00 ; wait for tool change
 M03
 M17
 G1 Z2
-G1 X55 Y25 F4000
+G1 X52 Y22 F4000
 G1 Z0
 M84 Z ; disable steppers
 M00 ; wait for confirming
