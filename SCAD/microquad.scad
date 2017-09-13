@@ -12,7 +12,12 @@ camAngle=10;
 //translate([-fs,fs,0])rotate([0,0,45]){p_guard();prop();}
 //translate([fs,-fs,0])rotate([0,0,-135]){p_guard();prop();}
 
-//translate([0,0,-5])cube([43,17,6],center=true); // Battery
+translate([0,0,-5])cube([43,17,6],center=true); // Battery
+
+rotate([0,0,45])esc();
+rotate([0,0,-45])esc();
+rotate([0,0,135])esc();
+rotate([0,0,-135])esc();
 
 frame();
 
@@ -91,6 +96,11 @@ module frame(){
         cube([17,17,2],center=true);    // FRAME
         rotate([0,0,45])cube([65,6,2],center=true);    // FRAME
         rotate([0,0,-45])cube([65,6,2],center=true);    // FRAME
+
+        translate([fs,fs,0])rotate([0,0,-45]){cylinder(d=9,h=2, center=true);}
+        translate([-fs,-fs,0])rotate([0,0,135]){cylinder(d=9,h=2, center=true);}
+        translate([-fs,fs,0])rotate([0,0,45]){cylinder(d=9,h=2, center=true);}
+        translate([fs,-fs,0])rotate([0,0,-135]){cylinder(d=9,h=2, center=true);}
     }
 }
 
@@ -123,4 +133,8 @@ module cammounttab(){
         }
         translate([camX/2+3,camY/2-0.35,-4.5])cylinder(d=1,h=2, center=true);
     }
+}
+
+module esc(){
+    translate([0,18,2])color("PURPLE")cube([6.5,11,2], center=true);
 }
