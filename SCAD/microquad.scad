@@ -12,21 +12,25 @@ camAngle=10;
 //translate([-fs,fs,0])rotate([0,0,45]){p_guard();prop();}
 //translate([fs,-fs,0])rotate([0,0,-135]){p_guard();prop();}
 
-translate([0,0,-5])cube([43,17,6],center=true); // Battery
+//translate([0,0,-5])cube([43,17,6],center=true); // Battery
 
+/*
 rotate([0,0,45])esc();
 rotate([0,0,-45])esc();
 rotate([0,0,135])esc();
 rotate([0,0,-135])esc();
 
-frame();
+translate([0,0,2.2])color("PURPLE")cube([11.3,11.3,2.5],center=true);    // FC
 
-translate([0,0,5.5])cameramount();
+frame();
+*/
+
+translate([0,0,1])cameramount(5);
+
 
 //translate([1.3,0,13])rotate([0,camAngle,0])cube([7,15,15],center=true); // Cam
 
 
-translate([0,0,2.2])color("PURPLE")cube([11.3,11.3,2.5],center=true);    // FC
 
 module p_guard(){
     color("BLACK")difference(){
@@ -105,36 +109,52 @@ module frame(){
 }
 
 
-module cameramount(){
-    rotate([0,camAngle,0])difference(){
+module esc(){
+    translate([0,18,2])color("PURPLE")cube([6.5,11,2], center=true);
+}
+
+
+module cameramount(height){
+    translate([0,0,height])rotate([0,camAngle,0])difference(){
         cube([camX+1.7,camY+1.7, 2], center=true);
         translate([0,0,0.4])cube([camX+0.1,camY+0.1, 2], center=true);
         cube([camX-3,camY+0.1, 5], center=true);
     }
     
-    translate([0,0,-2.25])difference(){
-        cube([camX+1.9,camY+1.7, 4.5], center=true);
-        cube([camX+0.3,camY+0.1, 5], center=true);
-        cube([camX+5,camY-3, 5], center=true);
-        translate([0,0,-1.7])cube([camX-3,camY+5, 5], center=true);
+    
+    translate([-camX/2+0.25,camY/2-0.35,0])rotate([0,0,-90])cameramountstand(height-0.2,90);
+
+    translate([camX/2-0.25,camY/2-0.35,0])rotate([0,0,180])cameramountstand(height,0);
+
+    translate([camX/2-0.25,-camY/2+0.35,0])rotate([0,0,90])cameramountstand(height,90);
+
+    translate([-camX/2-3.7,-camY/2+0.35,0])rotate([0,0,0])cameramountstand(height,-90);
+    
+    translate([-camX/2,camY/2+0.05,height-1.5])cube([7,0.8,1.5]);
+
+    translate([-camX/2-4.9,-camY/2-0.85,height-1.5])cube([12,0.8,1.5]);
+
+    translate([-camX/2-4.9,-camY/2-0.85,height-0.1])cube([4.5,2.4,0.8]);
+}
+
+
+
+module cameramountstand(hg,mrot){
+    //hg is height
+    // mrot is rotation of mount hole 0 or 90
+
+    translate([-2.4/2,-2.4/2,0]){
+        difference(){
+            cube([2.4,2.4,hg]);
+            translate([0.8,0.8,-0.5])cube([2.4,2.4,hg+1]);
+        }
     }
     
-    cammounttab();
-    mirror([1,0,0])cammounttab();
-    mirror([0,1,0])cammounttab();
-    mirror([1,0,0])mirror([0,1,0])cammounttab();
-}
-
-module cammounttab(){
-    difference(){
-        union(){
-            translate([camX/2+3,camY/2-0.35,-4.5])cylinder(d=2.8,h=0.6);
-            translate([camX/2+0.5,camY/2-0.35-2.4/2,-4.5])cube([2.4,2.4,0.6]);
+        rotate([0,0,mrot])translate([-2.8,0,0])difference(){
+            union(){
+                cylinder(d=2.8,h=0.6);
+                translate([0,-2.4/2,0])cube([4,2.4,0.6]);
+            }
+            cylinder(d=1,h=3,center=true);
         }
-        translate([camX/2+3,camY/2-0.35,-4.5])cylinder(d=1,h=2, center=true);
-    }
-}
-
-module esc(){
-    translate([0,18,2])color("PURPLE")cube([6.5,11,2], center=true);
 }
