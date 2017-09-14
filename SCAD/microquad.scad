@@ -1,16 +1,25 @@
-$fn=50;
-Bheight=0.85;
-fs=48/2;
+$fn=100;
+Bheight=0.7;
+fs=15/2;
 
 // Camera footprint is 7x15
 camX=7;
 camY=15;
 camAngle=10;
 
-//translate([fs,fs,0])rotate([0,0,-45]){p_guard();prop();}
-//translate([-fs,-fs,0])rotate([0,0,135]){p_guard();prop();}
-//translate([-fs,fs,0])rotate([0,0,45]){p_guard();prop();}
-//translate([fs,-fs,0])rotate([0,0,-135]){p_guard();prop();}
+// For printing
+translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();}
+translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();}
+translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();}
+translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
+
+
+/*
+translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();prop();}
+translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();prop();}
+translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();prop();}
+translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();prop();}
+*/
 
 //translate([0,0,-5])cube([43,17,6],center=true); // Battery
 
@@ -23,31 +32,19 @@ rotate([0,0,-135])esc();
 translate([0,0,2.2])color("PURPLE")cube([11.3,11.3,2.5],center=true);    // FC
 
 frame();
-*/
+
 
 translate([0,0,1])cameramount(5);
-
+*/
 
 //translate([1.3,0,13])rotate([0,camAngle,0])cube([7,15,15],center=true); // Cam
 
-
+//p_guard_duct();
 
 module p_guard(){
-    color("BLACK")difference(){
+    color("CYAN")difference(){
         union(){
-            hull(){
-                cylinder(d=1.7+2,h=Bheight, center=true);
-                translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
-            }
-            hull(){
-                cylinder(d=1.7+2,h=Bheight, center=true);
-                rotate([0,0,120])translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
-            }
-            hull(){
-                cylinder(d=1.7+2,h=Bheight, center=true);
-                rotate([0,0,-120])translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
-            }
-           
+            pguardmount();
             difference(){
                 bamper(0,Bheight,1.7);
                 bamper(3,Bheight+0.2,1.7);
@@ -71,9 +68,43 @@ module p_guard(){
     }
 }
 
+module p_guard_duct(){
+    color("CYAN")difference(){
+        union(){
+            //fillet(r=4,steps=4){
+                pguardmount();
+                difference(){
+                    bamper(-1.5,Bheight,1);
+                    bamper(0,Bheight+0.2,4);
+                }
+            //}
+            translate([0,0,Bheight*5])difference(){
+                bamper(-0.8,Bheight*10,1);
+                bamper(0,Bheight*10+0.2,1);
+                cylinder(d=11, h=Bheight*20, center=true);
+                rotate([13,0,0])translate([0,0,7])cube([40,25,20], center=true);
+            }
+
+        }
+        translate([0,5.5/2,0])cylinder(d=1.7,h=Bheight+0.2, center=true);
+        rotate([0,0,120])translate([0,5.5/2,0])cylinder(d=1.7,h=Bheight+0.2, center=true);
+        rotate([0,0,-120])translate([0,5.5/2,0])cylinder(d=1.7,h=Bheight+0.2, center=true);    
+        
+        translate([0,12,5.75])rotate([0,90,0])hull(){
+            cylinder(d=5,h=50, center=true);
+            translate([-10,2,0])cylinder(d=5,h=50, center=true);
+        }
+        
+        reduceweighthole();
+        rotate([0,0,27])reduceweighthole();
+        rotate([0,0,-27])reduceweighthole();
+
+    }
+}
+
 module bamper(adj, hght, cant){
     hull(){
-        cylinder(d=9.3-adj*cant,h=hght, center=true);
+        cylinder(d=9.3-adj-cant,h=hght, center=true);
         rotate([0,0,45])translate([0,40/2,0])cylinder(d=5-adj,h=hght, center=true);
         rotate([0,0,-45])translate([0,40/2,0])cylinder(d=5-adj,h=hght, center=true);
     }
@@ -158,3 +189,85 @@ module cameramountstand(hg,mrot){
             cylinder(d=1,h=3,center=true);
         }
 }
+
+
+module pguardmount(){
+    hull(){
+        cylinder(d=1.7+2,h=Bheight, center=true);
+        translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
+    }
+    hull(){
+        cylinder(d=1.7+2,h=Bheight, center=true);
+        rotate([0,0,120])translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
+    }
+    hull(){
+        cylinder(d=1.7+2,h=Bheight, center=true);
+        rotate([0,0,-120])translate([0,5.5/2,0])cylinder(d=1.7+2,h=Bheight, center=true);
+    }
+    cylinder(d=7.5,h=Bheight, center=true);
+    
+    pguardmountjoint();
+    mirror([1,0,0])pguardmountjoint();
+
+}
+
+module pguardmountjoint(){
+    hull(){
+        translate([2,0,0])cylinder(d=4,h=Bheight, center=true);
+        translate([10,5,0])cylinder(d=1,h=Bheight, center=true);
+    }
+}
+
+
+module reduceweighthole(){
+    rotate([90,0,0])hull(){
+        translate([2,3,-15])cylinder(d=3,h=30, center=true);
+        translate([-2,3,-15])cylinder(d=3,h=30, center=true);
+    }
+    
+}
+
+/*
+// Fillet function
+
+module fillet(r=1.0,steps=3,include=true) {
+  if(include) for (k=[0:$children-1]) {
+	children(k);
+  }
+  for (i=[0:$children-2] ) {
+    for(j=[i+1:$children-1] ) {
+	fillet_two(r=r,steps=steps) {
+	  children(i);
+	  children(j);
+	  intersection() {
+		children(i);
+		children(j);
+	  }
+	}
+    }
+  }
+}
+
+module fillet_two(r=1.0,steps=3) {
+  for(step=[1:steps]) {
+	hull() {
+	  render() intersection() {
+		children(0);
+		offset_3d(r=r*step/steps) children(2);
+	  }
+	  render() intersection() {
+		children(1);
+		offset_3d(r=r*(steps-step+1)/steps) children(2);
+	  }
+	}
+  }
+}
+
+module offset_3d(r=1.0) {
+  for(k=[0:$children-1]) minkowski() {
+	children(k);
+	sphere(r=r,$fn=8);
+  }
+}
+
+*/
