@@ -7,11 +7,12 @@ camX=7;
 camY=15;
 camAngle=10;
 
+
 // For printing
-translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();}
-translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();}
-translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();}
-translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
+//translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();}
+//translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();}
+//translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();}
+//translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
 
 
 /*
@@ -36,6 +37,8 @@ frame();
 
 translate([0,0,1])cameramount(5);
 */
+
+translate([0,0,1])cameramount(6.5);
 
 //translate([1.3,0,13])rotate([0,camAngle,0])cube([7,15,15],center=true); // Cam
 
@@ -166,6 +169,25 @@ module cameramount(height){
     translate([-camX/2-4.9,-camY/2-0.85,height-1.5])cube([12,0.8,1.5]);
 
     translate([-camX/2-4.9,-camY/2-0.85,height-0.1])cube([4.5,2.4,0.8]);
+    
+    translate([camX/2+0.55,-camY/2+2.3,height-2.9])triangleReinforcement();
+    translate([camX/2+0.55,camY/2-2.3,height-2.9])rotate([0,0,180])triangleReinforcement();
+
+    translate([0,camY/2-0.35,0.2])rotate([0,0,180])cube([7,2.4,0.4],center=true);
+
+    //translate([-camX/2-0.55,camY/2-2.3,height-1.47])rotate([0,0,180])triangleReinforcement();
+    translate([-camX/2+1.05,camY/2-1,height-1.6])rotate([0,0,180])triangleReinforcement();
+    translate([-camX/2+0.96,-camY/2+0.5,height-0.81])scale([1,0.45,0.45])triangleReinforcement();
+
+    translate([-camX/2-3,-camY/2+1.15,height-1])rotate([0,0,-90])triangleReinforcement();
+
+    translate([-camX/2-1.5,-camY/2-0.45,height-1.7])rotate([0,0,-90])triangleReinforcement();
+    translate([camX/2-2.5,-camY/2-0.45,height-2])rotate([0,0,90])triangleReinforcement();
+
+    translate([-camX/2+2.5,camY/2+0.45,height-2])rotate([0,0,-90])triangleReinforcement();
+    translate([camX/2-2.5,camY/2+0.45,height-2])rotate([0,0,90])triangleReinforcement();
+
+
 }
 
 
@@ -188,6 +210,7 @@ module cameramountstand(hg,mrot){
             }
             cylinder(d=1,h=3,center=true);
         }
+
 }
 
 
@@ -225,6 +248,13 @@ module reduceweighthole(){
         translate([-2,3,-15])cylinder(d=3,h=30, center=true);
     }
     
+}
+
+module triangleReinforcement(){
+    rotate([0,90,0])difference(){
+        cube([2.5,2.5,0.8], center=true);
+        translate([5,2,0])rotate([0,0,45])cube([10,10,1], center=true);
+    }
 }
 
 /*
