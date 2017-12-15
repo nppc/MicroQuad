@@ -1,6 +1,6 @@
 $fn=100;
 Bheight=0.7;
-fs=15/2;
+fs=48/2;
 
 // Camera footprint is 7x15
 camX=7;
@@ -15,12 +15,12 @@ camAngle=10;
 //translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
 
 
-/*
-translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();prop();}
-translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();prop();}
-translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();prop();}
-translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();prop();}
-*/
+
+//translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();prop();}
+//translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();prop();}
+//translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();prop();}
+//translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();prop();}
+
 
 //translate([0,0,-5])cube([43,17,6],center=true); // Battery
 
@@ -38,8 +38,38 @@ frame();
 translate([0,0,1])cameramount(5);
 */
 
-translate([0,0,1])cameramount(6.5);
+//translate([0,0,1])cameramount(6.5);
+/*
+translate([15,-30,0])rotate([0,0,45]){
+frame();
+translate([45,24,0])frame();
+translate([-24,45,0])frame();
+translate([21,69,0])frame();
+}
+*/
+frm_hght=1.9;
+difference(){
+    hull(){
+    translate([55/2,55/2,0])cylinder(d=110,h=frm_hght,center=true);
+    translate([-55/2,55/2,0])cylinder(d=110,h=frm_hght,center=true);
+    translate([55/2,-55/2,0])cylinder(d=110,h=frm_hght,center=true);
+    translate([-55/2,-55/2,0])cylinder(d=110,h=frm_hght,center=true);
+    }
+    hull(){
+    translate([50/2,50/2,0])cylinder(d=100,h=frm_hght+1,center=true);
+    translate([-50/2,50/2,0])cylinder(d=100,h=frm_hght+1,center=true);
+    translate([50/2,-50/2,0])cylinder(d=100,h=frm_hght+1,center=true);
+    translate([-50/2,-50/2,0])cylinder(d=100,h=frm_hght+1,center=true);
+    }
+    
+    cube([250,10,1], center=true);
+    rotate([0,0,90])cube([250,10,1], center=true);
+    rotate([0,0,45])cube([250,10,1], center=true);
+    rotate([0,0,-45])cube([250,10,1], center=true);
 
+
+
+}
 //translate([1.3,0,13])rotate([0,camAngle,0])cube([7,15,15],center=true); // Cam
 
 //p_guard_duct();
