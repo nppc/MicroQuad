@@ -9,13 +9,30 @@ camAngle=10;
 
 
 // For printing
-//translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();}
-//translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();}
-//translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();}
-//translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
+/*
+translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();}
+translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();}
+translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();}
+translate([fs,-fs,0])rotate([0,0,-135]){p_guard_duct();}
+*/
 
+module foamGuard(){
+    projection(cut = false)difference(){
+    hull(){
+        translate([fs,fs,0])rotate([0,0,-45])cylinder(d=45+10+0.8,h=16, center=true);
+        translate([-fs,-fs,0])rotate([0,0,135])cylinder(d=45+10+0.8,h=16, center=true);
+        translate([-fs,fs,0])rotate([0,0,45])cylinder(d=40+15+0.8,h=16, center=true);
+        translate([fs,-fs,0])rotate([0,0,-135])cylinder(d=40+15+0.8,h=16, center=true);
+    }
 
-
+    hull(){
+        translate([fs,fs,0])rotate([0,0,-45])cylinder(d=40+5+0.8,h=17, center=true);
+        translate([-fs,-fs,0])rotate([0,0,135])cylinder(d=40+5+0.8,h=17, center=true);
+        translate([-fs,fs,0])rotate([0,0,45])cylinder(d=40+5+0.8,h=17, center=true);
+        translate([fs,-fs,0])rotate([0,0,-135])cylinder(d=40+5+0.8,h=17, center=true);
+    }
+    }
+}
 //translate([fs,fs,0])rotate([0,0,-45]){p_guard_duct();prop();}
 //translate([-fs,-fs,0])rotate([0,0,135]){p_guard_duct();prop();}
 //translate([-fs,fs,0])rotate([0,0,45]){p_guard_duct();prop();}
@@ -47,6 +64,8 @@ translate([-24,45,0])frame();
 translate([21,69,0])frame();
 }
 */
+
+/*
 frm_hght=1.9;
 difference(){
     hull(){
@@ -66,10 +85,9 @@ difference(){
     rotate([0,0,90])cube([250,10,1], center=true);
     rotate([0,0,45])cube([250,10,1], center=true);
     rotate([0,0,-45])cube([250,10,1], center=true);
-
-
-
 }
+*/
+
 //translate([1.3,0,13])rotate([0,camAngle,0])cube([7,15,15],center=true); // Cam
 
 //p_guard_duct();
