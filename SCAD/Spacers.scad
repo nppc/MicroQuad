@@ -1,6 +1,6 @@
 $fn=50;
-SpacerDiam = 2.5;
-SpacerHole = 1.35;
+SpacerDiam = 2.8;
+SpacerHole = 1.45;
 // Spacer for 12x12mm mount
 
 rotate([180,0,0])fullCameraMount();
@@ -8,7 +8,7 @@ rotate([180,0,0])fullCameraMount();
 module fullCameraMount(){
     difference(){
         union(){
-            translate([-1.3,0,2])CameraMount();
+            translate([-1.4,0,2])rotate([0,0,-5])CameraMount();
             difference(){
                 union(){
                     translate([12/2,12/2,-2])cylinder(d=SpacerDiam,h=7);
@@ -21,11 +21,11 @@ module fullCameraMount(){
                    //translate([12/2,-12/2,1])cylinder(d=SpacerDiam+0.8,h=4);
                    //translate([-12/2,-12/2,1])cylinder(d=SpacerDiam+0.8,h=4);
                     
-                    translate([5,-12/2,3])cube([2,2,4],center=true);
-                    translate([5,12/2,3])cube([2,2,4],center=true);
+                    translate([4.5,-12/2,3])cube([2,2,4],center=true);
+                    translate([5.5,12/2,3])cube([2,2,4],center=true);
                     
-                    translate([-5,-12/2,3])cube([2,2,4],center=true);
-                    translate([-5,12/2,3])cube([2,2,4],center=true);
+                    translate([-5.5,-12/2,3])cube([2,2,4],center=true);
+                    translate([-4.5,12/2,3])cube([2,2,4],center=true);
                     
 
                 }
