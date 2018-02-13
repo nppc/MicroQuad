@@ -4,7 +4,7 @@ propD=40;   // propeller diameter
 propGap=0.8;  // gap between prop and duct ring
 ductHeight=5;
 ductwall=0.7; // wall thickness of duct
-partsGap=0.15;  // how much part will be thinner to fit in to socket
+partsGap=0.18;  // how much part will be thinner to fit in to socket
 motorElevation=17;  // distance from ground to motor mount
 xy_dist = mDist/sqrt(2);
 
@@ -14,17 +14,21 @@ difference(){
     ducts();
     FC_mount();
     spoke_Sockets_bottom();
+    translate([10-0.8,-8/2,ductHeight-3])cube([3,8,3]);
   }
   ductsCutout();
+  translate([10+partsGap/2,-(4+partsGap)/2,3])cube([0.8+partsGap,4+partsGap,5]);
 }
 
-rotate([-10,0,0])translate([0,-13,11.3]){
+translate([0,-13.5,14]){
   difference(){
-    cameraMount();
-    camera();
+    cameraMount(4);
+    camera(4);
   }
+  //camera(4);
 }
 
+//rotate([0,90,0])batteryMount();
 //rotate([90,0,0])spoke(0);
 
 /*
@@ -42,6 +46,20 @@ difference(){
   
 }
 
+translate([9,-7,9])batteryMountSocketsUpper();
+mirror([1,0,0])translate([9,-7,9])batteryMountSocketsUpper();
+*/
+
+//rotate([0,-90-180,0])translate([9,-7,9])batteryMount();
+//mirror([1,0,0])rotate([0,-90-180,0])translate([9,-7,9])batteryMount();
+
+
+//translate([9,-7,9])batteryMount();
+//mirror([1,0,0])translate([9,-7,9])batteryMount();
+
+/*
+
+
 translate([xy_dist/2,xy_dist/2,0])spoke(0);
 translate([xy_dist/2,xy_dist/2,0])spoke(90);
 translate([-xy_dist/2,xy_dist/2,0])spoke(90);
@@ -50,14 +68,10 @@ translate([xy_dist/2,-xy_dist/2,0])spoke(0);
 translate([xy_dist/2,-xy_dist/2,0])spoke(-90);
 translate([-xy_dist/2,-xy_dist/2,0])spoke(180);
 translate([-xy_dist/2,-xy_dist/2,0])spoke(-90);
-
-translate([12.6,-6,9])rotate([0,0,12])batteryMount();
-translate([-12.6,-6,9])rotate([0,0,-12])batteryMount();
-
 */
-
-//translate([-43/2,-5,10])color("green")cube([43,17,6]); // Battery
+//translate([-43/2,-6,10])color("green")cube([43,17,6]); // Battery
 //motor_props();
+
 
 module ducts(){
   diam1=propD+ductwall*2+propGap*2;
@@ -79,10 +93,14 @@ module ductsCutout(){
 
 
 module FC_mount(){
-  translate([6,0,0])FC_mount_part();
-  translate([-6,0,0])rotate([0,0,180])FC_mount_part();
-  translate([0,6,0])rotate([0,0,90])FC_mount_part();
-  translate([0,-6,0])rotate([0,0,-90])FC_mount_part();
+  dist=12*sqrt(2); //12mm between holes
+  translate([dist/2,0,0])FC_mount_part();
+  translate([-dist/2,0,0])rotate([0,0,180])FC_mount_part();
+  translate([0,dist/2,0])rotate([0,0,90])FC_mount_part();
+  translate([0,-dist/2,0])rotate([0,0,-90])FC_mount_part();
+  
+  translate([-3/2,-(dist+2)/2,0])cube([3,dist+2,0.5]);
+  translate([-(dist+2)/2,-3/2,0])cube([dist+2,3,0.5]);
 }
 
 module FC_mount_part(){
@@ -90,11 +108,17 @@ module FC_mount_part(){
     union(){
       hull(){
         cylinder(d=3,h=0.7);
-        translate([3,-7/2,0])cube([10,7,0.7]);
+        translate([3,-9/2,0])cube([10,9,0.7]);
       }
-      cylinder(d=2.2,h=2);
+      hull(){
+        translate([0,0,ductHeight-0.7]){
+          cylinder(d=3,h=0.7);
+          translate([3,-9/2,0])cube([10,9,0.7]);
+        }
+      }
+      cylinder(d=3,h=5);
     }
-    translate([0,0,-1])cylinder(d=1.4,h=5);
+    translate([0,0,-1])cylinder(d=1.4,h=7);
   }
 }
 
@@ -130,17 +154,27 @@ module motorMountHole(degrot){
   }
 }
 
-module camera(){
-  color("grey")rotate([90,0,0]){
+module camera(rotate){
+  color("grey")rotate([-rotate+90,0,0]){
     cube([15,15,7], center=true);
+    translate([-6.75,-6,0])cube([1.5,3,9], center=true);
     cylinder(d=12, h=7+3.5);
   }
 }
 
-module cameraMount(){
-  translate([0,0,-7.2])cube([16,8,1.5],center=true);
+module cameraMount(rotate){
+  difference(){
+    union(){
+      rotate([-rotate,0,0])translate([0,0,-7.6])cube([16.6,8.6,2.4],center=true);
+      hull(){
+        translate([-1/2,-5,-9.5])cube([1,7,1.5]);
+        translate([-4.5/2,1,-9.5])cube([4.5,1,1.5]);
+      }
+    }
+    translate([0,5,-7.1])cylinder(d=5,h=4,center=true);
+  }
   
-  translate([-1.7/2,-4,-13])cube([1.7,3,5]);
+  
   
 }
 
@@ -151,18 +185,18 @@ module backESCmount(){
 module frontESCmount(){
   //difference(){
     union(){
-      translate([-xy_dist/2,-xy_dist/2,motorElevation])rotate([0,0,60])translate([0,-6/2,0])cube([xy_dist/1.6,6,2]);
-      translate([xy_dist/2,-xy_dist/2,motorElevation])rotate([0,0,120])translate([0,-6/2,0])cube([xy_dist/1.6,6,2]);
+      translate([-xy_dist/2,-xy_dist/2,motorElevation])rotate([0,0,63])translate([0,-6/2,0])cube([xy_dist/1.65,6,2]);
+      translate([xy_dist/2,-xy_dist/2,motorElevation])rotate([0,0,117])translate([0,-6/2,0])cube([xy_dist/1.65,6,2]);
     }
     //translate([-xy_dist/2,0,motorElevation-1])cube([xy_dist,20,5]);
   //}
 }
 
 module middleESCmount(){
-  translate([8.5,0,motorElevation])rotate([0,0,90])translate([0,-5/2,0])cube([xy_dist/2,5,2]);
-  translate([-8.5,0,motorElevation])rotate([0,0,90])translate([0,-5/2,0])cube([xy_dist/2,5,2]);
+  translate([10,0,motorElevation])rotate([0,0,90])translate([0,-5/2,0])cube([xy_dist/2,5,2]);
+  translate([-10,0,motorElevation])rotate([0,0,90])translate([0,-5/2,0])cube([xy_dist/2,5,2]);
   
-  translate([-xy_dist/4,-5,motorElevation])cube([xy_dist/2,5,2]);
+  translate([-xy_dist/1.7/2,-9,motorElevation])cube([xy_dist/1.7,5,2]);
 }
 
 module motor_props(){
@@ -246,13 +280,11 @@ module spoke_SocketUpper(degrot){
 }
 
 module  spoke_SocketLower(degrot){
-  rotate([0,0,degrot])translate([propD/2+ductwall+propGap-0.3,-4.4/2,ductHeight-2.5]){
+  rotate([0,0,degrot])translate([propD/2+ductwall+propGap-0.3,-4.4/2,0]){
     difference(){
-      hull(){
-        cube([2.4,4.4,2.5]);
-        translate([0,0,-1.7])cube([0.2,4,1]);
-      }
-      translate([(2-1.3)/2,(4.4-3)/2,0])cube([1.3,3,4]);
+      cube([2.4,4.4,ductHeight]);
+      translate([(2-1.3)/2,(4.4-3)/2,-0.5])cube([1.3,3,ductHeight+1]);
+      translate([0,(4.4-3.7)/2,ductHeight-0.2])cube([2,3.7,ductHeight+1]);
     }
   }
 }
@@ -260,7 +292,7 @@ module  spoke_SocketLower(degrot){
 module spoke(degrot){
   rotate([0,0,degrot]){
     translate([propD/2+ductwall+propGap-0.3,-4/2,ductHeight-(2.5-partsGap)]){
-      translate([(2-(1.3-partsGap))/2,(4-(3-partsGap))/2,0])cube([1.3-partsGap,3-partsGap,2.6]);
+      translate([(2-(1.3-partsGap))/2,(4-(3-partsGap))/2,-ductHeight/2])cube([1.3-partsGap,3-partsGap,ductHeight]);
     }
 
     translate([4,-4/2,motorElevation]){
@@ -280,11 +312,25 @@ module spoke(degrot){
 }
 
 module batteryMount(){
-  translate([-4/2,0,0])cube([4,0.4,8]);
-  translate([-4/2,0,0])cube([4,19,0.4]);
-  translate([-4/2,19,0])cube([4,0.4,8]);
+  translate([-4/2,0,0])cube([4,0.8,8]);
+  translate([-4/2,0,0])cube([4,19,0.8]);
+  translate([-4/2,19,0])cube([4,0.8,8]);
   
-  translate([-4/2,-1.5,8-0.4])cube([4,1.5,0.4]);
-  translate([-4/2,19+0.4,8-0.4])cube([4,1.5,0.4]);
+  translate([-4/2,-2,8-0.8])cube([4,2,0.8]);
+  translate([-4/2,19+0.8,8-0.8])cube([4,2,0.8]);
+  
+  translate([4/2-0.8,5,-6])cube([0.8,4,6]);
 
+}
+
+module batteryMountSocketsUpper(){
+  difference(){
+    translate([-7/2,-2,8-1.5])cube([7,2,1.5]);
+    translate([-(4+partsGap)/2,-2.5,8-(0.8+partsGap)])cube([4+partsGap,3,0.8+partsGap]);
+  }
+
+  difference(){
+    translate([-7/2,19+0.8,8-1.5])cube([7,2,1.5+2]);
+    translate([-(4+partsGap)/2,19,8-(0.8+partsGap)])cube([4+partsGap,3,0.8+partsGap]);
+  }
 }
