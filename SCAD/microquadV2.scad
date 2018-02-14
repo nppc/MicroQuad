@@ -8,16 +8,19 @@ partsGap=0.18;  // how much part will be thinner to fit in to socket
 motorElevation=17;  // distance from ground to motor mount
 xy_dist = mDist/sqrt(2);
 
-
+/*
 difference(){
   union(){
     ducts();
     FC_mount();
     spoke_Sockets_bottom();
-    translate([10-0.8,-8/2,ductHeight-3])cube([3,8,3]);
+    translate([11.8-2,-8/2,ductHeight-2.7])cube([2,8,2]);
+    translate([-11.8,-8/2,ductHeight-2.7])cube([2,8,2]);
   }
   ductsCutout();
-  translate([10+partsGap/2,-(4+partsGap)/2,3])cube([0.8+partsGap,4+partsGap,5]);
+  translate([10+partsGap/2,-(4+partsGap)/2,3-partsGap/2])cube([0.8+partsGap,4+partsGap,5]);
+  translate([-11-partsGap/2,-(4+partsGap)/2,3-partsGap/2])cube([0.8+partsGap,4+partsGap,5]);
+
 }
 
 translate([0,-13.5,14]){
@@ -27,9 +30,10 @@ translate([0,-13.5,14]){
   }
   //camera(4);
 }
-
+*/
 //rotate([0,90,0])batteryMount();
-//rotate([90,0,0])spoke(0);
+//for(i=[0:10:80]){translate([i,0,0])rotate([90,0,0])spoke(0);}
+
 
 /*
 difference(){
@@ -58,8 +62,6 @@ mirror([1,0,0])translate([9,-7,9])batteryMountSocketsUpper();
 //mirror([1,0,0])translate([9,-7,9])batteryMount();
 
 /*
-
-
 translate([xy_dist/2,xy_dist/2,0])spoke(0);
 translate([xy_dist/2,xy_dist/2,0])spoke(90);
 translate([-xy_dist/2,xy_dist/2,0])spoke(90);
@@ -147,9 +149,9 @@ module motorMount(){
 
 module motorMountHole(degrot){
   rotate([0,0,degrot]){
-    cylinder(d=2.8,h=10,center=true);
+    cylinder(d=2.3,h=10,center=true);
     for (i=[0:120:240]){
-      rotate([0,0,i])translate([5.5/2,0,0])cylinder(d=1.7,h=10, center=true);
+      rotate([0,0,i])translate([5.5/2,0,0])cylinder(d=1.75,h=10, center=true);
     }
   }
 }
@@ -271,10 +273,11 @@ module spoke_Sockets_upper(){
 }
 
 module spoke_SocketUpper(degrot){
-  rotate([0,0,degrot])translate([4,-4/2,motorElevation]){
+  rotate([0,0,degrot])translate([4,-5/2,motorElevation-1]){
     difference(){
-      cube([2.5,4,2]);
-      translate([0,(4-3)/2,(2-1.3)/2])cube([3,3,1.3]);
+      cube([4,5,3]);
+      translate([1,(5-3)/2,(3-1.3)/2])cube([4,3,1.3]);
+      translate([-4,5/2,-0.5])cylinder(d=8.5, h=2);
     }
   }
 }
@@ -295,8 +298,8 @@ module spoke(degrot){
       translate([(2-(1.3-partsGap))/2,(4-(3-partsGap))/2,-ductHeight/2])cube([1.3-partsGap,3-partsGap,ductHeight]);
     }
 
-    translate([4,-4/2,motorElevation]){
-      translate([1+partsGap,(4-(3-partsGap))/2,(2-(1.3-partsGap))/2])cube([1.6,3-partsGap,1.3-partsGap]);
+    translate([2,-4/2,motorElevation]){
+      translate([3+partsGap,(4-(3-partsGap))/2,(1-(1.3-partsGap))/2])cube([3,3-partsGap,1.3-partsGap]);
     }
 
     hull(){
@@ -304,8 +307,8 @@ module spoke(degrot){
         translate([(2-(1.3))/2,(4-(3-partsGap))/2,0])cube([1.3,3-partsGap,0.2]);
       }
 
-      translate([4,-4/2,motorElevation]){
-        translate([2.4+partsGap,(4-(3-partsGap))/2,(2-(1.3))/2])cube([0.2,3-partsGap,1.3]);
+      translate([5.5,-4/2,motorElevation]){
+        translate([2.4+partsGap,(4-(3-partsGap))/2,(1-(1.3))/2])cube([0.2,3-partsGap,1.3]);
       }
     }
   }
