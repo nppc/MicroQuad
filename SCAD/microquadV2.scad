@@ -10,7 +10,7 @@ motorElevation=16;  // distance from ground to motor mount
 xy_dist = mDist/sqrt(2);
 
 // Visibility parameters
-SHOW_DUCTS = 1;
+SHOW_DUCTS = 0;
 SHOW_UPPER_FRAME = 0;
 SHOW_SPOKES = 0;
 SHOW_BATTERYMOUNT = 0;
@@ -18,7 +18,7 @@ SHOW_BATTERYMOUNT = 0;
 // Printing parameters
 PRINT_DUCTS = 0;
 PRINT_UPPER_FRAME = 0;
-PRINT_OTHER = 0;
+PRINT_OTHER = 1;
 
 if(SHOW_DUCTS==1 || PRINT_DUCTS==1){
   difference(){
@@ -48,7 +48,7 @@ if(PRINT_OTHER ==1){
   print_spoke_SocketUpperRing();
   rotate([0,90,0])translate([-2,-5,-12])batteryMount();
   mirror([1,0,0])rotate([0,90,0])translate([-2,5,0])batteryMount();
-  for(i=[0:10:80]){translate([i-20,-5,1.5-partsGap])rotate([90,0,0])spoke(0);}
+  for(i=[0:9:85]){translate([i-20,-5,1.5-partsGap])rotate([90,0,0])spoke(0);}
 }
 
 if(SHOW_UPPER_FRAME==1 || PRINT_UPPER_FRAME ==1){
@@ -312,7 +312,7 @@ module spoke_SocketUpperRing(mWidth){
 }
 
 module print_spoke_SocketUpperRing(){
-  for(i=[0:7:70]){translate([i,0,1])spoke_SocketUpperRing(mWidth);}
+  for(i=[0:6:70]){translate([i,0,1])spoke_SocketUpperRing(mWidth);}
 }
 
 module  spoke_SocketLower(degrot){
@@ -355,7 +355,7 @@ module batteryMount(){
   translate([-4/2,-2,8-0.8])cube([4,2,0.8]);
   translate([-4/2,19+0.8,8-0.8])cube([4,2,0.8]);
   
-  translate([4/2-0.8,5.25,-(motorElevation-11)])cube([0.8,3.5,motorElevation-11]);
+  translate([4/2-0.9,5.2,-(motorElevation-11)])cube([0.9,3.6,motorElevation-11]);
 
 }
 
